@@ -1,24 +1,22 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { globalStyles } from "@/styles/global-styles";
+import { Slot } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { Platform, View } from "react-native";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+// Configurar la barra de navegación en Android
+import * as NavigationBar from "expo-navigation-bar";
+const isAndroid = Platform.OS === "android";
+if (isAndroid) {
+  NavigationBar.setBackgroundColorAsync("black");
+}
 
-export const unstable_settings = {
-  anchor: '(tabs)',
+const RootLayout = () => {
+  return (
+    <View style={globalStyles.background}>
+      <Slot />
+      <StatusBar style="light" />
+    </View>
+  );
 };
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
-}
+export default RootLayout;
