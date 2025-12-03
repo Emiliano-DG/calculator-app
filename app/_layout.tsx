@@ -3,7 +3,7 @@ import { Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Platform, View } from "react-native";
 
-// Configurar la barra de navegación en Android
+//NOTE: Configuracion de la barra de navegacion
 import * as NavigationBar from "expo-navigation-bar";
 const isAndroid = Platform.OS === "android";
 if (isAndroid) {
