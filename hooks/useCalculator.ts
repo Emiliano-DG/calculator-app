@@ -16,8 +16,17 @@ export const useCalculator = () => {
   const lastOperator = useRef<Operator | undefined>(undefined);
 
   useEffect(() => {
+    if (lastOperator.current) {
+      const firstFormulaPart = formula.split(" ").at(0); // obtener la primera parte de la formula
+      setFormula(`${firstFormulaPart} ${lastOperator.current} ${number}`);
+    } else {
+      setFormula(number);
+    }
+  }, [number]);
+
+  useEffect(() => {
     //TODO:calcular subresultado
-    setFormula(number);
+    // setFormula(number);
   }, [number]);
 
   //funcion de borrado
@@ -34,6 +43,50 @@ export const useCalculator = () => {
       return setNumber(number.replace("-", ""));
     }
     setNumber("-" + number);
+  };
+
+  const deleteLast = () => {
+    let curretSing = "";
+    let temporalNumber = number;
+
+    if (number.includes("-")) {
+      curretSing = "-";
+      temporalNumber = number.replace("-", "");
+    }
+
+    if (temporalNumber.length > 1) {
+      const newNumber = temporalNumber.slice(0, -1);
+      setNumber(curretSing + newNumber);
+    } else {
+      setNumber("0");
+    }
+  };
+
+  const setLastNumber = () => {
+    //TODO: CALCULAR RESULTADO
+
+    if (number.endsWith(".")) {
+      setPreviousNumber(number.slice(0, -1));
+    }
+    setPreviousNumber(number);
+    setNumber("0");
+  };
+
+  const divideOperations = () => {
+    setLastNumber();
+    lastOperator.current = Operator.divide;
+  };
+  const multiplyOperations = () => {
+    setLastNumber();
+    lastOperator.current = Operator.multiply;
+  };
+  const subtractOperations = () => {
+    setLastNumber();
+    lastOperator.current = Operator.subtract;
+  };
+  const addOperations = () => {
+    setLastNumber();
+    lastOperator.current = Operator.add;
   };
 
   const buildNumber = (numberString: string) => {
@@ -73,5 +126,10 @@ export const useCalculator = () => {
     buildNumber,
     clean,
     toggleSign,
+    deleteLast,
+    divideOperations,
+    multiplyOperations,
+    subtractOperations,
+    addOperations,
   };
 };

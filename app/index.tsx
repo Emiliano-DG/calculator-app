@@ -7,14 +7,30 @@ import { globalStyles } from "@/styles/global-styles";
 import { View } from "react-native";
 
 const index = () => {
-  const { formula, buildNumber, clean, toggleSign } = useCalculator();
+  const {
+    formula,
+    previousNumber,
+    buildNumber,
+    clean,
+    toggleSign,
+    deleteLast,
+    divideOperations,
+    multiplyOperations,
+    subtractOperations,
+    addOperations,
+  } = useCalculator();
 
   return (
     <View style={globalStyles.calculatorContainer}>
       {/* Resultados */}
       <View style={{ paddingHorizontal: 3, marginBottom: 20 }}>
         <ThemeText variant="primary">{formula}</ThemeText>
-        <ThemeText variant="secondary">250</ThemeText>
+
+        {formula === previousNumber ? (
+          <ThemeText variant="secondary"> </ThemeText>
+        ) : (
+          <ThemeText variant="secondary">{previousNumber}</ThemeText>
+        )}
       </View>
       {/* Teclado */}
       <View style={globalStyles.row}>
@@ -34,9 +50,13 @@ const index = () => {
           label="del"
           blackColor
           color={Colors.lightGray}
-          onPress={() => {}}
+          onPress={deleteLast}
         />
-        <CalculatorButton label="%" color={Colors.orange} onPress={() => {}} />
+        <CalculatorButton
+          label="%"
+          color={Colors.orange}
+          onPress={divideOperations}
+        />
       </View>
 
       <View style={globalStyles.row}>
@@ -58,7 +78,11 @@ const index = () => {
             buildNumber("9");
           }}
         />
-        <CalculatorButton label="*" color={Colors.orange} onPress={() => {}} />
+        <CalculatorButton
+          label="*"
+          color={Colors.orange}
+          onPress={multiplyOperations}
+        />
       </View>
       <View style={globalStyles.row}>
         <CalculatorButton
@@ -79,7 +103,11 @@ const index = () => {
             buildNumber("6");
           }}
         />
-        <CalculatorButton label="-" color={Colors.orange} onPress={() => {}} />
+        <CalculatorButton
+          label="-"
+          color={Colors.orange}
+          onPress={subtractOperations}
+        />
       </View>
       <View style={globalStyles.row}>
         <CalculatorButton
@@ -100,7 +128,11 @@ const index = () => {
             buildNumber("3");
           }}
         />
-        <CalculatorButton label="+" color={Colors.orange} onPress={() => {}} />
+        <CalculatorButton
+          label="+"
+          color={Colors.orange}
+          onPress={addOperations}
+        />
       </View>
       <View style={globalStyles.row}>
         <CalculatorButton
