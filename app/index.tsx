@@ -18,6 +18,8 @@ const index = () => {
     multiplyOperations,
     subtractOperations,
     addOperations,
+
+    calculateResult,
   } = useCalculator();
 
   return (
@@ -148,7 +150,11 @@ const index = () => {
             buildNumber(".");
           }}
         />
-        <CalculatorButton label="=" color={Colors.orange} onPress={() => {}} />
+        <CalculatorButton
+          label="="
+          color={Colors.orange}
+          onPress={calculateResult}
+        />
       </View>
     </View>
   );

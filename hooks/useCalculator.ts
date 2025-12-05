@@ -24,10 +24,11 @@ export const useCalculator = () => {
     }
   }, [number]);
 
+  // Actualizar el resultado previo cuando la formula cambie
   useEffect(() => {
-    //TODO:calcular subresultado
-    // setFormula(number);
-  }, [number]);
+    const subresult = calculateSubresult();
+    setPreviousNumber(subresult.toString());
+  }, [formula]);
 
   //funcion de borrado
   const clean = () => {
@@ -45,6 +46,7 @@ export const useCalculator = () => {
     setNumber("-" + number);
   };
 
+  //funcion de borrado de ultimo numero
   const deleteLast = () => {
     let curretSing = "";
     let temporalNumber = number;
@@ -62,9 +64,9 @@ export const useCalculator = () => {
     }
   };
 
+  //funcion para guardar el numero anterior
   const setLastNumber = () => {
-    //TODO: CALCULAR RESULTADO
-
+    calculateResult();
     if (number.endsWith(".")) {
       setPreviousNumber(number.slice(0, -1));
     }
@@ -89,6 +91,39 @@ export const useCalculator = () => {
     lastOperator.current = Operator.add;
   };
 
+  //funcion para calcular el subresultado
+  const calculateSubresult = () => {
+    const [firstValue, operator, secondValue] = formula.split(" ");
+
+    const num1 = Number(firstValue);
+    const num2 = Number(secondValue);
+
+    if (isNaN(num2)) return num1;
+
+    switch (operator) {
+      case Operator.add:
+        return num1 + num2;
+      case Operator.subtract:
+        return num1 - num2;
+      case Operator.multiply:
+        return num1 * num2;
+      case Operator.divide:
+        return num1 / num2;
+
+      default:
+        throw new Error(`Operador ${operator} no reconocido`);
+    }
+  };
+
+  //funcion para calcular el resultado final
+  const calculateResult = () => {
+    const result = calculateSubresult();
+    setFormula(result.toString());
+    setPreviousNumber("0");
+    lastOperator.current = undefined;
+  };
+
+  //funcion para construir el numero
   const buildNumber = (numberString: string) => {
     // verificar si ya existe un punto decimal
     if (numberString === "." && number.includes(".")) return;
@@ -131,5 +166,6 @@ export const useCalculator = () => {
     multiplyOperations,
     subtractOperations,
     addOperations,
+    calculateResult,
   };
 };
